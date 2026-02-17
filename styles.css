@@ -669,3 +669,31 @@ body.theme-space {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
+
+/* Footer Styles */
+.game-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    text-align: center;
+    z-index: 100;
+}
+
+.game-footer a {
+    color: white;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    padding: 8px 20px;
+    border-radius: 20px;
+    display: inline-block;
+}
+
+.game-footer a:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.05);
+}

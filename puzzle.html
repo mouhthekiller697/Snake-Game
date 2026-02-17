@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sliding Puzzle - Fungames Time</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="puzzle.css">
+</head>
+<body>
+    <div class="game-screen active">
+        <div class="game-container">
+            <h1 class="game-title">
+                <span class="title-letter">S</span>
+                <span class="title-letter">L</span>
+                <span class="title-letter">I</span>
+                <span class="title-letter">D</span>
+                <span class="title-letter">I</span>
+                <span class="title-letter">N</span>
+                <span class="title-letter">G</span>
+                <span class="title-spacer"></span>
+                <span class="title-letter">P</span>
+                <span class="title-letter">U</span>
+                <span class="title-letter">Z</span>
+                <span class="title-letter">Z</span>
+                <span class="title-letter">L</span>
+                <span class="title-letter">E</span>
+            </h1>
+
+            <!-- Photo Selection -->
+            <div id="photoSelection" class="photo-selection">
+                <h2 class="section-title">Choose a Photo</h2>
+                <div class="photo-grid" id="photoGrid">
+                    <button class="photo-card" data-photo="1">
+                        <div class="photo-preview" style="background: linear-gradient(135deg, #667eea, #764ba2);">
+                            <span class="photo-number">1</span>
+                        </div>
+                        <span>Gradient Purple</span>
+                    </button>
+                    <button class="photo-card" data-photo="2">
+                        <div class="photo-preview" style="background: linear-gradient(135deg, #f093fb, #f5576c);">
+                            <span class="photo-number">2</span>
+                        </div>
+                        <span>Pink Sunset</span>
+                    </button>
+                    <button class="photo-card" data-photo="3">
+                        <div class="photo-preview" style="background: linear-gradient(135deg, #4facfe, #00f2fe);">
+                            <span class="photo-number">3</span>
+                        </div>
+                        <span>Ocean Blue</span>
+                    </button>
+                    <button class="photo-card" data-photo="4">
+                        <div class="photo-preview" style="background: linear-gradient(135deg, #43e97b, #38f9d7);">
+                            <span class="photo-number">4</span>
+                        </div>
+                        <span>Mint Fresh</span>
+                    </button>
+                    <button class="photo-card" data-photo="5">
+                        <div class="photo-preview" style="background: linear-gradient(135deg, #fa709a, #fee140);">
+                            <span class="photo-number">5</span>
+                        </div>
+                        <span>Sunrise</span>
+                    </button>
+                    <button class="photo-card" data-photo="6">
+                        <div class="photo-preview" style="background: linear-gradient(135deg, #30cfd0, #330867);">
+                            <span class="photo-number">6</span>
+                        </div>
+                        <span>Deep Space</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Game Board -->
+            <div id="puzzleGame" class="puzzle-game hidden">
+                <div class="game-info">
+                    <div class="info-row">
+                        <div class="info-item">
+                            <span class="info-label">Moves</span>
+                            <span class="info-value" id="moveCount">0</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Time</span>
+                            <span class="info-value" id="timeCount">0:00</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-secondary btn-small" id="previewBtn">
+                        <span>👁️ Preview</span>
+                    </button>
+                </div>
+
+                <div class="puzzle-container">
+                    <div id="puzzleBoard" class="puzzle-board"></div>
+                </div>
+
+                <div class="game-controls">
+                    <button class="btn btn-primary" id="shuffleBtn">
+                        <span>🔄 Shuffle</span>
+                    </button>
+                    <button class="btn btn-secondary" id="newPhotoBtn">
+                        <span>🖼️ Change Photo</span>
+                    </button>
+                </div>
+            </div>
+
+            <button class="btn btn-secondary back-to-main" onclick="window.location.href='index.html'">
+                <span>← Back to Main Menu</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Preview Modal -->
+    <div id="previewModal" class="modal hidden">
+        <div class="modal-content preview-modal">
+            <h2>Complete Image</h2>
+            <div id="previewImage" class="preview-image"></div>
+            <button class="btn btn-primary" id="closePreviewBtn">
+                <span>Close</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Winner Modal -->
+    <div id="winnerModal" class="modal hidden">
+        <div class="modal-content">
+            <h2>🎉 Puzzle Solved! 🎉</h2>
+            <div class="win-stats">
+                <p>Moves: <strong id="finalMoves">0</strong></p>
+                <p>Time: <strong id="finalTime">0:00</strong></p>
+            </div>
+            <button class="btn btn-primary btn-large" id="playAgainBtn">
+                <span>Play Again</span>
+            </button>
+            <button class="btn btn-secondary" id="changePhotoBtn">
+                <span>Change Photo</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="game-footer">
+        <a href="https://github.com/mouhthekiller697" target="_blank" rel="noopener noreferrer">made with love</a>
+    </footer>
+
+    <script src="puzzle.js"></script>
+</body>
+</html>

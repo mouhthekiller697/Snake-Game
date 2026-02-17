@@ -3,162 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Snake Game - Classic Arcade Fun</title>
+    <title>Fungames Time - Play Fun Games Online</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="main.css">
 </head>
 <body>
-    <!-- Welcome/Menu Screen -->
-    <div id="welcomeScreen" class="screen active">
-        <div class="welcome-container">
-            <h1 class="game-title">
-                <span class="title-letter">S</span>
+    <div class="main-menu-screen active">
+        <div class="main-container">
+            <h1 class="main-title">
+                <span class="title-letter">F</span>
+                <span class="title-letter">U</span>
                 <span class="title-letter">N</span>
-                <span class="title-letter">A</span>
-                <span class="title-letter">K</span>
-                <span class="title-letter">E</span>
-                <span class="title-spacer"></span>
                 <span class="title-letter">G</span>
                 <span class="title-letter">A</span>
                 <span class="title-letter">M</span>
                 <span class="title-letter">E</span>
+                <span class="title-letter">S</span>
+                <span class="title-spacer"></span>
+                <span class="title-letter">T</span>
+                <span class="title-letter">I</span>
+                <span class="title-letter">M</span>
+                <span class="title-letter">E</span>
             </h1>
             
-            <div class="high-score-display">
-                <div class="trophy-icon">🏆</div>
-                <div>High Score: <span id="menuHighScore">0</span></div>
-            </div>
-
-            <button class="btn btn-primary btn-large start-btn" id="startGameBtn">
-                <span>Start New Game</span>
-            </button>
-
-            <!-- Theme Selector -->
-            <div class="options-section">
-                <h2 class="section-title">Choose Your Theme</h2>
-                <div class="theme-grid" id="themeGrid">
-                    <button class="theme-card" data-theme="nokia">
-                        <div class="theme-preview nokia-preview"></div>
-                        <span>Nokia Classic</span>
-                    </button>
-                    <button class="theme-card" data-theme="neon">
-                        <div class="theme-preview neon-preview"></div>
-                        <span>Neon Cyberpunk</span>
-                    </button>
-                    <button class="theme-card" data-theme="nature">
-                        <div class="theme-preview nature-preview"></div>
-                        <span>Nature Forest</span>
-                    </button>
-                    <button class="theme-card" data-theme="ocean">
-                        <div class="theme-preview ocean-preview"></div>
-                        <span>Ocean Blue</span>
-                    </button>
-                    <button class="theme-card" data-theme="desert">
-                        <div class="theme-preview desert-preview"></div>
-                        <span>Desert Sand</span>
-                    </button>
-                    <button class="theme-card" data-theme="space">
-                        <div class="theme-preview space-preview"></div>
-                        <span>Space Galaxy</span>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Snake Selector -->
-            <div class="options-section">
-                <h2 class="section-title">Choose Your Snake</h2>
-                <div class="snake-grid" id="snakeGrid">
-                    <button class="snake-card" data-snake="classic">
-                        <div class="snake-preview">
-                            <div class="preview-snake classic-snake"></div>
-                        </div>
-                        <span>Classic</span>
-                    </button>
-                    <button class="snake-card" data-snake="gradient">
-                        <div class="snake-preview">
-                            <div class="preview-snake gradient-snake"></div>
-                        </div>
-                        <span>Gradient</span>
-                    </button>
-                    <button class="snake-card" data-snake="striped">
-                        <div class="snake-preview">
-                            <div class="preview-snake striped-snake"></div>
-                        </div>
-                        <span>Striped</span>
-                    </button>
-                    <button class="snake-card" data-snake="rainbow">
-                        <div class="snake-preview">
-                            <div class="preview-snake rainbow-snake"></div>
-                        </div>
-                        <span>Rainbow</span>
-                    </button>
-                </div>
+            <p class="subtitle">Choose your game and start playing!</p>
+            
+            <div class="games-grid">
+                <a href="snake.html" class="game-card">
+                    <div class="game-icon">🐍</div>
+                    <h2 class="game-name">Snake Game</h2>
+                    <p class="game-description">Classic snake game with multiple themes and customization</p>
+                    <span class="play-btn">Play Now →</span>
+                </a>
+                
+                <a href="tictactoe.html" class="game-card">
+                    <div class="game-icon">⭕</div>
+                    <h2 class="game-name">Tic Tac Toe</h2>
+                    <p class="game-description">Play against a friend or challenge the AI</p>
+                    <span class="play-btn">Play Now →</span>
+                </a>
+                
+                <a href="puzzle.html" class="game-card">
+                    <div class="game-icon">🧩</div>
+                    <h2 class="game-name">Sliding Puzzle</h2>
+                    <p class="game-description">Solve the 3x3 sliding photo puzzle</p>
+                    <span class="play-btn">Play Now →</span>
+                </a>
             </div>
         </div>
     </div>
 
-    <!-- Game Screen -->
-    <div id="gameScreen" class="screen">
-        <div class="game-container">
-            <div class="game-header">
-                <div class="score-panel">
-                    <div class="score-item">
-                        <span class="score-label">Score</span>
-                        <span class="score-value" id="currentScore">0</span>
-                    </div>
-                    <div class="score-item">
-                        <span class="score-label">High Score</span>
-                        <span class="score-value" id="gameHighScore">0</span>
-                    </div>
-                </div>
-                <button class="btn btn-secondary" id="pauseBtn">Pause</button>
-            </div>
-            
-            <div class="canvas-wrapper">
-                <canvas id="gameCanvas"></canvas>
-                <div id="pauseOverlay" class="pause-overlay">
-                    <h2>PAUSED</h2>
-                    <p>Press any key to continue</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Game Over Screen -->
-    <div id="gameOverScreen" class="screen">
-        <div class="game-over-container">
-            <h1 class="game-over-title">GAME OVER</h1>
-            
-            <div id="newHighScoreMsg" class="new-high-score hidden">
-                <div class="star-burst">✨</div>
-                <div class="high-score-text">NEW HIGH SCORE!</div>
-                <div class="star-burst">✨</div>
-            </div>
-            
-            <div class="final-scores">
-                <div class="final-score-item">
-                    <span class="final-score-label">Your Score</span>
-                    <span class="final-score-value" id="finalScore">0</span>
-                </div>
-                <div class="final-score-item">
-                    <span class="final-score-label">High Score</span>
-                    <span class="final-score-value" id="finalHighScore">0</span>
-                </div>
-            </div>
-
-            <div class="game-over-buttons">
-                <button class="btn btn-primary btn-large" id="playAgainBtn">
-                    <span>Play Again</span>
-                </button>
-                <button class="btn btn-secondary" id="backToMenuBtn">
-                    <span>Back to Menu</span>
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Particle Container for Effects -->
-    <div id="particleContainer"></div>
-
-    <script src="game.js"></script>
+    <!-- Footer -->
+    <footer class="game-footer">
+        <a href="https://github.com/mouhthekiller697" target="_blank" rel="noopener noreferrer">made with love</a>
+    </footer>
 </body>
 </html>

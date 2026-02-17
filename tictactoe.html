@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic Tac Toe - Fungames Time</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="tictactoe.css">
+</head>
+<body>
+    <div class="game-screen active">
+        <div class="game-container">
+            <h1 class="game-title">
+                <span class="title-letter">T</span>
+                <span class="title-letter">I</span>
+                <span class="title-letter">C</span>
+                <span class="title-spacer"></span>
+                <span class="title-letter">T</span>
+                <span class="title-letter">A</span>
+                <span class="title-letter">C</span>
+                <span class="title-spacer"></span>
+                <span class="title-letter">T</span>
+                <span class="title-letter">O</span>
+                <span class="title-letter">E</span>
+            </h1>
+
+            <!-- Mode Selection -->
+            <div id="modeSelection" class="mode-selection">
+                <h2 class="section-title">Choose Game Mode</h2>
+                <div class="mode-buttons">
+                    <button class="btn btn-primary btn-large" id="pvpBtn">
+                        <span>👥 Player vs Player</span>
+                    </button>
+                    <button class="btn btn-secondary btn-large" id="pvbotBtn">
+                        <span>🤖 Player vs Bot</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Difficulty Selection -->
+            <div id="difficultySelection" class="difficulty-selection hidden">
+                <h2 class="section-title">Choose Difficulty</h2>
+                <div class="difficulty-buttons">
+                    <button class="btn btn-primary" data-difficulty="easy">
+                        <span>😊 Easy</span>
+                    </button>
+                    <button class="btn btn-primary" data-difficulty="medium">
+                        <span>😐 Medium</span>
+                    </button>
+                    <button class="btn btn-primary" data-difficulty="hard">
+                        <span>😈 Hard</span>
+                    </button>
+                </div>
+                <button class="btn btn-secondary" id="backToModeBtn">
+                    <span>← Back</span>
+                </button>
+            </div>
+
+            <!-- Game Board -->
+            <div id="gameBoard" class="game-board-container hidden">
+                <div class="game-info">
+                    <div class="turn-indicator" id="turnIndicator">Player X's Turn</div>
+                    <div class="score-display">
+                        <div class="score-item">
+                            <span class="score-label">X Wins</span>
+                            <span class="score-value" id="xWins">0</span>
+                        </div>
+                        <div class="score-item">
+                            <span class="score-label">Draws</span>
+                            <span class="score-value" id="draws">0</span>
+                        </div>
+                        <div class="score-item">
+                            <span class="score-label">O Wins</span>
+                            <span class="score-value" id="oWins">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="board" id="board">
+                    <div class="cell" data-index="0"></div>
+                    <div class="cell" data-index="1"></div>
+                    <div class="cell" data-index="2"></div>
+                    <div class="cell" data-index="3"></div>
+                    <div class="cell" data-index="4"></div>
+                    <div class="cell" data-index="5"></div>
+                    <div class="cell" data-index="6"></div>
+                    <div class="cell" data-index="7"></div>
+                    <div class="cell" data-index="8"></div>
+                </div>
+
+                <div class="game-controls">
+                    <button class="btn btn-primary" id="resetBtn">
+                        <span>🔄 New Game</span>
+                    </button>
+                    <button class="btn btn-secondary" id="changeModeBtn">
+                        <span>⚙️ Change Mode</span>
+                    </button>
+                </div>
+            </div>
+
+            <button class="btn btn-secondary back-to-main" onclick="window.location.href='index.html'">
+                <span>← Back to Main Menu</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Winner Modal -->
+    <div id="winnerModal" class="modal hidden">
+        <div class="modal-content">
+            <h2 id="winnerText">Player X Wins! 🎉</h2>
+            <button class="btn btn-primary btn-large" id="playAgainBtn">
+                <span>Play Again</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="game-footer">
+        <a href="https://github.com/mouhthekiller697" target="_blank" rel="noopener noreferrer">made with love</a>
+    </footer>
+
+    <script src="tictactoe.js"></script>
+</body>
+</html>
