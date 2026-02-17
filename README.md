@@ -1,82 +1,118 @@
-# 🐍 Snake Game
+# 🎮 Fungames Time
 
-A fully functional, beautiful Snake Game website with multiple themes and customization options. Built with pure HTML, CSS, and JavaScript - no external dependencies required!
+A multi-game platform featuring three fun and engaging games! Built with pure HTML, CSS, and JavaScript - no external dependencies required!
 
-## 🎮 Features
+## 🎮 Games Included
 
-### Game Mechanics
+### 🐍 Snake Game
+A fully functional, beautiful Snake Game with multiple themes and customization options.
+
+**Features:**
 - **Classic Snake gameplay** with smooth, responsive controls
 - **Arrow keys** or **WASD** for movement
 - **Score tracking** with high score persistence (localStorage)
 - **Progressive difficulty** - game speeds up as you play
 - **Pause functionality** - Press Space or Escape to pause
-- **Collision detection** - Game over on wall or self-collision
-- **Smooth animations** and visual feedback
+- **6 Unique Themes**: Nokia Classic, Neon Cyberpunk, Nature Forest, Ocean Blue, Desert Sand, Space Galaxy
+- **4 Snake Skins**: Classic, Gradient, Striped, Rainbow
 
-### 🎨 Visual Design
+### ⭕ Tic Tac Toe
+A classic Tic Tac Toe game with both local multiplayer and AI opponent options.
+
+**Features:**
+- **Player vs Player** - Two players on the same device
+- **Player vs Bot** - Challenge the AI with three difficulty levels:
+  - **Easy** - Random moves
+  - **Medium** - Mix of strategic and random moves
+  - **Hard** - Unbeatable minimax algorithm
+- **Win detection** and animated winning cells
+- **Score tracking** across multiple games
+- **Clean, intuitive interface**
+
+### 🧩 Sliding Puzzle
+A 3x3 sliding photo puzzle game with colorful gradient images.
+
+**Features:**
+- **6 different photos** to choose from
+- **Smart shuffle algorithm** ensures puzzle is always solvable
+- **Move counter** tracks your efficiency
+- **Timer** to challenge yourself
+- **Preview button** to see the complete image
+- **Win detection** with congratulations modal
+
+## 🎨 Visual Design
 - **Beautiful, modern UI** with gradient backgrounds
-- **Animated welcome screen** with bouncing title letters
+- **Animated title screens** with bouncing letters
 - **Smooth transitions** between screens
-- **Particle effects** when eating food
+- **Particle effects** (Snake Game)
 - **Hover animations** on all interactive elements
 - **Responsive design** - works on desktop, tablet, and mobile
-
-### 🌈 6 Unique Themes
-1. **Nokia 3310 Classic** - Retro green monochrome display with authentic grid
-2. **Neon Cyberpunk** - Bright neon colors with glowing effects
-3. **Nature/Forest** - Green grass background with organic colors
-4. **Ocean/Aquatic** - Blue water theme with aquatic vibes
-5. **Desert/Sand** - Warm sandy colors with desert palette
-6. **Space/Galaxy** - Dark space theme with stars and cosmic colors
-
-### 🐍 4 Snake Skins
-1. **Classic** - Traditional solid-color snake
-2. **Gradient** - Beautiful gradient fade effect
-3. **Striped** - Alternating color pattern
-4. **Rainbow** - Full rainbow spectrum colors
 
 ## 🚀 Getting Started
 
 ### Quick Start
 1. Clone this repository
 2. Open `index.html` in a web browser
-3. Choose your theme and snake skin
-4. Click "Start New Game" and enjoy!
+3. Choose your game from the main menu
+4. Have fun!
 
 ### No Installation Required
 This is a pure client-side application - no server, no build process, no dependencies. Just open and play!
 
 ## 🎯 How to Play
 
-### Controls
+### Snake Game
+**Controls:**
 - **Arrow Keys** or **WASD** - Move the snake
 - **Space** or **Escape** - Pause/Resume game
 
-### Rules
+**Rules:**
 - Guide the snake to eat the food (circular dots)
 - Each food increases your score by 10 points
 - The snake grows longer with each food eaten
 - Game speeds up as you progress
 - Avoid hitting walls or your own body
-- Try to beat your high score!
+
+### Tic Tac Toe
+**Rules:**
+- Click on empty cells to place your mark (X or O)
+- Get three in a row (horizontal, vertical, or diagonal) to win
+- First player is always X
+- Choose between playing with a friend or against the AI
+
+### Sliding Puzzle
+**Rules:**
+- Click on tiles adjacent to the empty space to slide them
+- Arrange all tiles in order to complete the puzzle
+- The puzzle is solved when all numbered tiles are in sequence
+- Use the preview button to see the complete image
 
 ## 📁 Project Structure
 
 ```
-Snake-Game/
-├── index.html    # Main HTML structure
-├── styles.css    # All styling and animations
-├── game.js       # Game logic and rendering
-└── README.md     # This file
+Fungames-Time/
+├── index.html         # Main menu/landing page
+├── snake.html         # Snake game page
+├── tictactoe.html     # Tic Tac Toe game page
+├── puzzle.html        # Sliding puzzle game page
+├── styles.css         # Shared/base styling
+├── main.css           # Main menu specific styles
+├── snake.css          # Snake game specific styles
+├── tictactoe.css      # Tic Tac Toe specific styles
+├── puzzle.css         # Puzzle game specific styles
+├── game.js            # Snake game logic
+├── tictactoe.js       # Tic Tac Toe game logic
+├── puzzle.js          # Puzzle game logic
+└── README.md          # This file
 ```
 
 ## 🛠️ Technical Details
 
 ### Technologies Used
-- **HTML5 Canvas** for game rendering
+- **HTML5** for structure and Canvas for Snake game rendering
 - **CSS3** for animations and styling
 - **Vanilla JavaScript** for game logic
-- **localStorage** for data persistence
+- **localStorage** for data persistence (high scores, preferences)
 
 ### Browser Support
 - Chrome/Edge (recommended)
@@ -86,12 +122,12 @@ Snake-Game/
 
 ### Performance
 - Optimized for smooth 60fps gameplay
-- Efficient canvas rendering
+- Efficient canvas rendering (Snake)
 - Minimal memory footprint
 - Fast load times (no external dependencies)
 
 ## 📱 Responsive Design
-The game automatically adapts to different screen sizes:
+All games automatically adapt to different screen sizes:
 - **Desktop**: Full-featured experience
 - **Tablet**: Touch-friendly interface
 - **Mobile**: Optimized layout and controls
@@ -99,24 +135,23 @@ The game automatically adapts to different screen sizes:
 ## 💾 Features Implementation
 
 ### LocalStorage
-- High scores persist between sessions
-- Theme preferences saved
+- High scores persist between sessions (Snake, Tic Tac Toe)
+- Theme preferences saved (Snake)
 - Snake skin selection saved
 
-### Particle System
-- Dynamic particle effects on food consumption
-- Multiple colors based on current theme
-- Smooth animations
+### AI Implementation (Tic Tac Toe)
+- **Easy Mode**: Random move selection
+- **Medium Mode**: 50/50 mix of optimal and random moves
+- **Hard Mode**: Minimax algorithm for perfect play
 
-### Theme System
-- Easy to add new themes
-- Complete color customization
-- Background effects (stars for space theme)
-- Grid styling options
+### Puzzle Algorithm
+- Smart shuffle ensures puzzle is always solvable
+- Move validation only allows adjacent tiles to slide
+- Win detection checks if all tiles are in correct order
 
 ## 🎨 Customization
 
-### Adding New Themes
+### Adding New Themes (Snake)
 Edit the `THEMES` object in `game.js`:
 ```javascript
 newtheme: {
@@ -131,25 +166,42 @@ newtheme: {
 ### Adding New Snake Skins
 Edit the `SNAKE_SKINS` object in `game.js` to add custom rendering logic.
 
-## 🏆 High Score System
+### Adding New Puzzle Photos
+Edit the `photos` object in `puzzle.js`:
+```javascript
+7: 'linear-gradient(135deg, #color1, #color2)'
+```
+
+## 🏆 Score Systems
+
+### Snake Game
 - Automatically saves your best score
-- Displays high score on menu screen
+- Displays high score on menu and during gameplay
 - Shows "NEW HIGH SCORE!" message when achieved
 - Persistent across browser sessions
 
+### Tic Tac Toe
+- Tracks wins for X, O, and draws
+- Score persists across games
+- Reset available by clearing browser data
+
 ## 🎭 Animations
 - Bouncing letters in title
-- Rotating trophy icon
-- Pulsing start button
+- Rotating trophy icon (Snake)
+- Pulsing start buttons
 - Smooth screen transitions
-- Particle explosions
-- Hover effects on all buttons
+- Particle explosions (Snake)
+- Hover effects on all buttons and cards
+- Pop-in animations for game pieces
 
 ## 📄 License
 This project is open source and available for educational purposes.
 
 ## 🤝 Contributing
-Feel free to fork this project and add your own features, themes, or improvements!
+Feel free to fork this project and add your own features, games, themes, or improvements!
+
+## 🔗 Links
+- GitHub Profile: [mouhthekiller697](https://github.com/mouhthekiller697)
 
 ## 🎉 Enjoy!
-Have fun playing Snake! Try to beat your high score and experiment with different themes and snake skins!
+Have fun playing all three games! Try to beat your high scores and challenge your friends!
