@@ -104,3 +104,32 @@
 .rainbow-snake {
     background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet);
 }
+
+/* Effect Message Styles */
+.effect-message {
+    position: fixed;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.9);
+    color: white;
+    padding: 20px 40px;
+    border-radius: 15px;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    z-index: 10000;
+    opacity: 0;
+    pointer-events: none;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    transition: opacity 0.3s ease;
+}
+
+.effect-message.show {
+    opacity: 1;
+}
+
+.effect-message.fade-out {
+    opacity: 0;
+}

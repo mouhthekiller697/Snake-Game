@@ -6,6 +6,49 @@ const CONFIG = {
     INITIAL_SPEED: 150,
     SPEED_INCREASE: 5,
     MIN_SPEED: 50,
+    SPECIAL_FRUIT_CHANCE: 0.25, // 25% chance for special fruit
+    EFFECT_DURATION: 10000, // 10 seconds in milliseconds
+};
+
+// Fruit Types Configuration
+const FRUIT_TYPES = {
+    regular: {
+        name: 'Regular',
+        color: null, // Uses theme color
+        effect: 'none',
+        message: '',
+        soundFrequency: 440
+    },
+    speedBoost: {
+        name: 'Speed Boost',
+        color: '#FF6B35',
+        effect: 'speed',
+        duration: 10000,
+        message: '⚡ SPEED BOOST! +10s',
+        soundFrequency: 880
+    },
+    slow: {
+        name: 'Slow',
+        color: '#74C0FC',
+        effect: 'slow',
+        duration: 10000,
+        message: '❄️ SLOWED DOWN! 10s',
+        soundFrequency: 220
+    },
+    doubleLength: {
+        name: 'Double Length',
+        color: '#FFD700',
+        effect: 'double',
+        message: '⭐ DOUBLE LENGTH!',
+        soundFrequency: 660
+    },
+    mystery: {
+        name: 'Mystery',
+        color: '#B197FC',
+        effect: 'random',
+        message: '❓ MYSTERY FRUIT!',
+        soundFrequency: 550
+    }
 };
 
 // Theme Configurations
@@ -130,13 +173,22 @@ class Game {
         this.snake = [];
         this.direction = { x: 1, y: 0 };
         this.nextDirection = { x: 1, y: 0 };
-        this.food = { x: 0, y: 0 };
+        this.food = { x: 0, y: 0, type: 'regular' };
         this.score = 0;
         this.highScore = this.loadHighScore();
         this.gameLoop = null;
         this.speed = CONFIG.INITIAL_SPEED;
+        this.baseSpeed = CONFIG.INITIAL_SPEED;
         this.isRunning = false;
         this.isPaused = false;
+        
+        // Effect tracking
+        this.activeEffect = null;
+        this.effectTimer = null;
+        
+        // Audio setup
+        this.audioContext = null;
+        this.backgroundMusic = null;
         
         this.currentTheme = localStorage.getItem('selectedTheme') || 'nokia';
         this.currentSnakeSkin = localStorage.getItem('selectedSnake') || 'classic';
@@ -147,9 +199,21 @@ class Game {
         this.updateHighScoreDisplay();
         this.applyTheme();
         this.applySnakeSkin();
+        this.initializeAudio();
         
         if (THEMES[this.currentTheme].stars) {
             this.generateStars();
+        }
+    }
+    
+    initializeAudio() {
+        // Initialize Web Audio API context
+        this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        
+        // Get background music element
+        this.backgroundMusic = document.getElementById('backgroundMusic');
+        if (this.backgroundMusic) {
+            this.backgroundMusic.volume = 0.3; // 30% volume
         }
     }
     
@@ -282,6 +346,7 @@ class Game {
         this.isRunning = true;
         this.isPaused = false;
         this.gameLoop = setInterval(() => this.update(), this.speed);
+        this.startBackgroundMusic();
     }
     
     resetGame() {
@@ -294,6 +359,8 @@ class Game {
         this.nextDirection = { x: 1, y: 0 };
         this.score = 0;
         this.speed = CONFIG.INITIAL_SPEED;
+        this.baseSpeed = CONFIG.INITIAL_SPEED;
+        this.clearActiveEffect();
         this.updateScore();
         this.generateFood();
         this.draw();
@@ -321,17 +388,25 @@ class Game {
         if (head.x === this.food.x && head.y === this.food.y) {
             this.score += 10;
             this.updateScore();
+            
+            // Apply fruit effect
+            this.applyFruitEffect(this.food.type);
+            
             this.generateFood();
             this.createParticles(
                 this.food.x * CONFIG.CELL_SIZE + CONFIG.CELL_SIZE / 2,
                 this.food.y * CONFIG.CELL_SIZE + CONFIG.CELL_SIZE / 2
             );
             
-            // Increase speed
-            if (this.speed > CONFIG.MIN_SPEED) {
-                this.speed = Math.max(CONFIG.MIN_SPEED, this.speed - CONFIG.SPEED_INCREASE);
-                clearInterval(this.gameLoop);
-                this.gameLoop = setInterval(() => this.update(), this.speed);
+            // Increase speed (only affects base speed)
+            if (this.baseSpeed > CONFIG.MIN_SPEED) {
+                this.baseSpeed = Math.max(CONFIG.MIN_SPEED, this.baseSpeed - CONFIG.SPEED_INCREASE);
+                // Only update if no active effect
+                if (!this.activeEffect || (this.activeEffect !== 'speed' && this.activeEffect !== 'slow')) {
+                    this.speed = this.baseSpeed;
+                    clearInterval(this.gameLoop);
+                    this.gameLoop = setInterval(() => this.update(), this.speed);
+                }
             }
         } else {
             this.snake.pop();
@@ -375,6 +450,17 @@ class Game {
                 }
             }
         } while (isOnSnake);
+        
+        // Determine fruit type
+        const rand = Math.random();
+        if (rand < CONFIG.SPECIAL_FRUIT_CHANCE) {
+            // Special fruit
+            const specialTypes = ['speedBoost', 'slow', 'doubleLength', 'mystery'];
+            newFood.type = specialTypes[Math.floor(Math.random() * specialTypes.length)];
+        } else {
+            // Regular fruit
+            newFood.type = 'regular';
+        }
         
         this.food = newFood;
     }
@@ -430,13 +516,17 @@ class Game {
         // Draw food
         const foodX = this.food.x * CONFIG.CELL_SIZE;
         const foodY = this.food.y * CONFIG.CELL_SIZE;
+        const fruitType = FRUIT_TYPES[this.food.type];
         
-        if (theme.foodGlow) {
+        // Determine food color
+        const foodColor = fruitType.color || theme.food;
+        
+        if (theme.foodGlow || fruitType.color) {
             this.ctx.shadowBlur = 20;
-            this.ctx.shadowColor = theme.food;
+            this.ctx.shadowColor = foodColor;
         }
         
-        this.ctx.fillStyle = theme.food;
+        this.ctx.fillStyle = foodColor;
         this.ctx.beginPath();
         this.ctx.arc(
             foodX + CONFIG.CELL_SIZE / 2,
@@ -446,6 +536,21 @@ class Game {
             Math.PI * 2
         );
         this.ctx.fill();
+        
+        // Add visual distinction for special fruits (inner circle)
+        if (this.food.type !== 'regular') {
+            this.ctx.shadowBlur = 0;
+            this.ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+            this.ctx.beginPath();
+            this.ctx.arc(
+                foodX + CONFIG.CELL_SIZE / 2,
+                foodY + CONFIG.CELL_SIZE / 2,
+                CONFIG.CELL_SIZE / 4,
+                0,
+                Math.PI * 2
+            );
+            this.ctx.fill();
+        }
         
         this.ctx.shadowBlur = 0;
     }
@@ -506,20 +611,199 @@ class Game {
         document.getElementById('menuHighScore').textContent = this.highScore;
     }
     
+    applyFruitEffect(fruitType) {
+        const fruit = FRUIT_TYPES[fruitType];
+        
+        // Play sound effect
+        this.playSound(fruit.soundFrequency);
+        
+        // Apply effect based on fruit type
+        switch (fruit.effect) {
+            case 'speed':
+                this.applySpeedBoost();
+                break;
+            case 'slow':
+                this.applySlow();
+                break;
+            case 'double':
+                this.applyDoubleLength();
+                break;
+            case 'random':
+                this.applyMysteryEffect();
+                break;
+        }
+        
+        // Show effect message
+        if (fruit.message) {
+            this.showEffectMessage(fruit.message);
+        }
+    }
+    
+    applySpeedBoost() {
+        this.clearActiveEffect();
+        this.activeEffect = 'speed';
+        
+        // Make snake faster (reduce interval)
+        this.speed = Math.max(CONFIG.MIN_SPEED, this.baseSpeed * 0.6);
+        clearInterval(this.gameLoop);
+        this.gameLoop = setInterval(() => this.update(), this.speed);
+        
+        // Reset after duration
+        this.effectTimer = setTimeout(() => {
+            this.clearActiveEffect();
+        }, CONFIG.EFFECT_DURATION);
+    }
+    
+    applySlow() {
+        this.clearActiveEffect();
+        this.activeEffect = 'slow';
+        
+        // Make snake slower (increase interval)
+        this.speed = this.baseSpeed * 1.5;
+        clearInterval(this.gameLoop);
+        this.gameLoop = setInterval(() => this.update(), this.speed);
+        
+        // Reset after duration
+        this.effectTimer = setTimeout(() => {
+            this.clearActiveEffect();
+        }, CONFIG.EFFECT_DURATION);
+    }
+    
+    applyDoubleLength() {
+        // Get current snake length and double it
+        const currentLength = this.snake.length;
+        const tail = this.snake[this.snake.length - 1];
+        
+        // Add segments at the tail position
+        for (let i = 0; i < currentLength; i++) {
+            this.snake.push({ ...tail });
+        }
+    }
+    
+    applyMysteryEffect() {
+        // Randomly choose one of the three effects
+        const effects = ['speed', 'slow', 'double'];
+        const chosenEffect = effects[Math.floor(Math.random() * effects.length)];
+        
+        let message = '❓ MYSTERY: ';
+        switch (chosenEffect) {
+            case 'speed':
+                this.applySpeedBoost();
+                message += 'SPEED BOOST!';
+                break;
+            case 'slow':
+                this.applySlow();
+                message += 'SLOWED DOWN!';
+                break;
+            case 'double':
+                this.applyDoubleLength();
+                message += 'DOUBLE LENGTH!';
+                break;
+        }
+        
+        // Override the message
+        this.showEffectMessage(message);
+    }
+    
+    clearActiveEffect() {
+        if (this.effectTimer) {
+            clearTimeout(this.effectTimer);
+            this.effectTimer = null;
+        }
+        
+        if (this.activeEffect === 'speed' || this.activeEffect === 'slow') {
+            // Restore base speed
+            this.speed = this.baseSpeed;
+            clearInterval(this.gameLoop);
+            this.gameLoop = setInterval(() => this.update(), this.speed);
+        }
+        
+        this.activeEffect = null;
+    }
+    
+    showEffectMessage(message) {
+        // Create message element
+        let messageEl = document.getElementById('effectMessage');
+        if (!messageEl) {
+            messageEl = document.createElement('div');
+            messageEl.id = 'effectMessage';
+            messageEl.className = 'effect-message';
+            document.body.appendChild(messageEl);
+        }
+        
+        messageEl.textContent = message;
+        messageEl.classList.remove('fade-out');
+        messageEl.classList.add('show');
+        
+        // Fade out after 2.5 seconds
+        setTimeout(() => {
+            messageEl.classList.add('fade-out');
+            setTimeout(() => {
+                messageEl.classList.remove('show', 'fade-out');
+            }, 500);
+        }, 2500);
+    }
+    
+    playSound(frequency) {
+        if (!this.audioContext) return;
+        
+        try {
+            const oscillator = this.audioContext.createOscillator();
+            const gainNode = this.audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(this.audioContext.destination);
+            
+            oscillator.frequency.value = frequency;
+            oscillator.type = 'sine';
+            
+            gainNode.gain.setValueAtTime(0.3, this.audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + 0.2);
+            
+            oscillator.start(this.audioContext.currentTime);
+            oscillator.stop(this.audioContext.currentTime + 0.2);
+        } catch (error) {
+            console.log('Audio playback error:', error);
+        }
+    }
+    
+    startBackgroundMusic() {
+        if (this.backgroundMusic) {
+            try {
+                this.backgroundMusic.currentTime = 0;
+                this.backgroundMusic.play().catch(error => {
+                    console.log('Background music autoplay prevented:', error);
+                });
+            } catch (error) {
+                console.log('Background music error:', error);
+            }
+        }
+    }
+    
+    pauseBackgroundMusic() {
+        if (this.backgroundMusic) {
+            this.backgroundMusic.pause();
+        }
+    }
+    
     togglePause() {
         this.isPaused = !this.isPaused;
         const pauseOverlay = document.getElementById('pauseOverlay');
         
         if (this.isPaused) {
             pauseOverlay.classList.add('active');
+            this.pauseBackgroundMusic();
         } else {
             pauseOverlay.classList.remove('active');
+            this.startBackgroundMusic();
         }
     }
     
     gameOver() {
         this.isRunning = false;
         clearInterval(this.gameLoop);
+        this.clearActiveEffect();
+        this.pauseBackgroundMusic();
         
         // Check for new high score
         const isNewHighScore = this.score > this.highScore;
