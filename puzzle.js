@@ -113,7 +113,7 @@ class SlidingPuzzle {
                 // Set background gradient with position
                 tile.style.background = this.photos[this.selectedPhoto];
                 tile.style.backgroundSize = '300% 300%';
-                tile.style.backgroundPosition = `${col * 100}% ${row * 100}%`;
+                tile.style.backgroundPosition = `${col * 50}% ${row * 50}%`;
                 
                 // Check if this tile is moveable
                 if (this.isMoveable(index)) {

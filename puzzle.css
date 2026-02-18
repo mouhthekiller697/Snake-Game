@@ -161,33 +161,15 @@
 
 .puzzle-tile.moveable {
     cursor: pointer;
-    animation: pulse-moveable 1.5s ease-in-out infinite;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2), 
+                inset 0 1px 0 rgba(255, 255, 255, 0.2),
+                0 0 0 2px rgba(102, 126, 234, 0.4);
 }
 
-.puzzle-tile.moveable::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    border-radius: 6px;
-    border: 2px solid rgba(102, 126, 234, 0.6);
-    pointer-events: none;
-    opacity: 0.8;
-}
-
-@keyframes pulse-moveable {
-    0%, 100% {
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2), 
-                    inset 0 1px 0 rgba(255, 255, 255, 0.2),
-                    0 0 0 0 rgba(102, 126, 234, 0.4);
-    }
-    50% {
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2), 
-                    inset 0 1px 0 rgba(255, 255, 255, 0.2),
-                    0 0 0 4px rgba(102, 126, 234, 0);
-    }
+.puzzle-tile.moveable:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3), 
+                inset 0 1px 0 rgba(255, 255, 255, 0.2),
+                0 0 0 3px rgba(102, 126, 234, 0.6);
 }
 
 .game-controls {
